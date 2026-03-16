@@ -1,42 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { 
+  Search, 
   Menu, 
   X, 
-  ChevronRight, 
+  ChevronDown, 
+  Globe, 
   Users, 
   Briefcase, 
   TrendingUp, 
   Award, 
-  Calendar, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin,
   ArrowRight,
-  CheckCircle2,
-  Globe,
-  ShieldCheck
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Youtube,
+  MapPin,
+  Phone,
+  Mail,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 
 // --- Components ---
 
-const Navbar = () => {
+const UtilityHeader = () => (
+  <div className="bg-ccc-blue-dark text-white py-2 px-6 hidden md:block">
+    <div className="max-w-7xl mx-auto flex justify-end items-center gap-6 text-xs font-medium">
+      <a href="#" className="hover:underline flex items-center gap-1"><Globe className="w-3 h-3" /> Translate</a>
+      <a href="#" className="hover:underline">Contact Us</a>
+      <a href="#" className="hover:underline">Join Now</a>
+      <a href="#" className="hover:underline">Member Login</a>
+      <div className="flex items-center bg-white/10 rounded px-2 py-1">
+        <input type="text" placeholder="Search" className="bg-transparent border-none text-white placeholder-white/70 focus:outline-none w-32" />
+        <Search className="w-3 h-3 cursor-pointer" />
+      </div>
+    </div>
+  </div>
+);
+
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
+  const navItems = [
     { name: 'Home', href: '#' },
     { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
@@ -45,166 +52,119 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-3' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center font-display font-bold text-black text-xl">
+    <header className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-ccc-blue rounded-full flex items-center justify-center font-serif font-bold text-white text-xl">
             B
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold text-white leading-none tracking-tight">BCC</span>
-            <span className="text-[10px] text-gold uppercase tracking-widest font-semibold">Inland Empire</span>
+            <span className="text-ccc-blue font-serif font-bold text-xl leading-tight uppercase tracking-tight">Black Chamber</span>
+            <span className="text-ccc-blue font-serif font-bold text-xl leading-tight uppercase tracking-tight">Inland Empire</span>
           </div>
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className="text-white/80 hover:text-gold text-sm font-medium transition-colors"
-            >
-              {link.name}
-            </a>
+        <nav className="hidden lg:flex items-center gap-8">
+          {navItems.map((item) => (
+            <div key={item.name} className="group relative">
+              <a href={item.href} className="nav-link flex items-center gap-1">
+                {item.name} <ChevronDown className="w-4 h-4" />
+              </a>
+            </div>
           ))}
-          <button className="btn-gold text-sm py-2">Join Now</button>
-        </div>
+          <button className="btn-primary py-2">Join the Chamber</button>
+        </nav>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button className="lg:hidden text-ccc-blue" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-black border-b border-white/10 p-6 md:hidden"
-          >
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  className="text-white text-lg font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
-              <button className="btn-gold w-full">Join Now</button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+      {isOpen && (
+        <div className="lg:hidden bg-ccc-light border-t border-zinc-200 p-6">
+          <div className="flex flex-col gap-4">
+            {navItems.map((item) => (
+              <a key={item.name} href={item.href} className="text-ccc-blue font-bold text-lg">
+                {item.name}
+              </a>
+            ))}
+            <button className="btn-primary w-full">Join the Chamber</button>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };
 
 const Hero = () => {
   return (
-    <section className="relative h-screen flex items-center overflow-hidden bg-black">
-      {/* Background Image with Overlay */}
+    <section className="relative h-[550px] flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070" 
-          alt="Inland Empire Skyline" 
-          className="w-full h-full object-cover opacity-40"
+          alt="Inland Empire Business" 
+          className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-ccc-blue/90 to-transparent"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
         <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl text-white"
         >
-          <span className="inline-block text-gold font-display font-bold tracking-[0.2em] uppercase text-sm mb-4">
+          <span className="inline-block text-ccc-gold font-bold tracking-[0.2em] uppercase text-sm mb-4">
             Empowering Black Business
           </span>
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-[1.1] mb-6">
-            Building a <span className="text-gold">Legacy</span> of Economic Excellence
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight">
+            Building a <span className="text-ccc-gold">Legacy</span> of Economic Excellence
           </h1>
-          <p className="text-xl text-zinc-400 mb-8 leading-relaxed">
+          <p className="text-xl mb-8 leading-relaxed text-white/90">
             The Black Chamber of Commerce Inland Empire is dedicated to the economic empowerment of African American businesses and the community.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="btn-gold flex items-center gap-2 group">
-              Become a Member <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="px-6 py-3 border border-white/20 text-white font-semibold rounded-md hover:bg-white/10 transition-all">
-              Learn More
+            <button className="btn-secondary">Become a Member</button>
+            <button className="px-6 py-3 border-2 border-white text-white font-bold rounded hover:bg-white/10 transition-all">
+              Our Mission
             </button>
           </div>
         </motion.div>
       </div>
-
-      {/* Decorative Element */}
-      <div className="absolute bottom-0 right-0 w-1/3 h-1/2 bg-gold/5 blur-[120px] rounded-full"></div>
     </section>
   );
 };
 
-const Stats = () => {
-  const stats = [
-    { label: 'Members', value: '500+' },
-    { label: 'Years Active', value: '25+' },
-    { label: 'Events Annually', value: '40+' },
-    { label: 'Community Impact', value: '$2M+' },
-  ];
-
+const AboutSection = () => {
   return (
-    <section className="bg-zinc-950 py-12 border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-gold mb-1">{stat.value}</div>
-              <div className="text-zinc-500 text-sm uppercase tracking-widest font-medium">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const About = () => {
-  return (
-    <section id="about" className="section-padding bg-red-800">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <section id="about" className="section-container">
+      <div className="grid md:grid-cols-2 gap-16 items-center">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           className="relative"
         >
-          <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
-            <img 
-              src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1974" 
-              alt="Team Meeting" 
-              className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div className="absolute -bottom-6 -right-6 bg-gold p-8 rounded-2xl shadow-xl hidden lg:block">
-            <p className="text-black font-display font-bold text-2xl">Established 1998</p>
-            <p className="text-black/70 text-sm">Serving the IE for over 2 decades</p>
+          <img 
+            src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1974" 
+            alt="BCCIE Leadership" 
+            className="rounded-lg shadow-xl w-full"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute -bottom-6 -right-6 bg-ccc-gold p-6 rounded shadow-lg hidden lg:block">
+            <p className="text-ccc-blue-dark font-serif font-bold text-xl">Established 1998</p>
+            <p className="text-ccc-blue-dark/70 text-sm font-medium">Serving the IE for 25+ years</p>
           </div>
         </motion.div>
 
         <div>
-          <h2 className="text-sm font-bold text-gold uppercase tracking-widest mb-4">Who We Are</h2>
-          <h3 className="text-4xl font-display font-bold text-white mb-6">Our Mission is Your Success</h3>
-          <p className="text-red-100 mb-6 text-lg leading-relaxed">
+          <h2 className="text-sm font-bold text-ccc-blue uppercase tracking-widest mb-4">Who We Are</h2>
+          <h3 className="text-4xl font-serif font-bold text-ccc-blue mb-6">Our Mission is Your Success</h3>
+          <p className="text-zinc-600 mb-6 text-lg leading-relaxed">
             The Black Chamber of Commerce Inland Empire (BCCIE) is a non-profit organization that provides business development, advocacy, and networking opportunities for African American businesses in the Inland Empire region.
           </p>
           <div className="space-y-4 mb-8">
@@ -215,13 +175,13 @@ const About = () => {
               'Foster community partnerships'
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
-                <CheckCircle2 className="text-gold w-5 h-5 flex-shrink-0" />
-                <span className="text-white font-medium">{item}</span>
+                <CheckCircle2 className="text-ccc-gold w-5 h-5 flex-shrink-0" />
+                <span className="text-zinc-700 font-medium">{item}</span>
               </div>
             ))}
           </div>
-          <button className="text-white font-bold flex items-center gap-2 hover:text-gold transition-colors">
-            Read Our Full Story <ChevronRight className="w-4 h-4" />
+          <button className="text-ccc-blue font-bold flex items-center gap-2 hover:underline">
+            Read Our Full Story <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -229,65 +189,54 @@ const About = () => {
   );
 };
 
-const Services = () => {
+const ServicesSection = () => {
   const services = [
     {
       title: 'Business Advocacy',
       description: 'We represent your interests at the local, state, and federal levels to ensure a fair business environment.',
-      icon: ShieldCheck
+      icon: ShieldCheck,
+      color: 'bg-ccc-blue'
     },
     {
       title: 'Networking Events',
       description: 'Connect with other business owners, community leaders, and potential clients at our regular mixers.',
-      icon: Users
+      icon: Users,
+      color: 'bg-ccc-blue-dark'
     },
     {
       title: 'Technical Assistance',
       description: 'Get expert advice on business planning, marketing, financial management, and more.',
-      icon: Briefcase
-    },
-    {
-      title: 'Procurement Support',
-      description: 'We help you navigate the process of bidding for government and corporate contracts.',
-      icon: Globe
-    },
-    {
-      title: 'Marketing & Visibility',
-      description: 'Increase your reach through our member directory, social media, and community spotlights.',
-      icon: TrendingUp
-    },
-    {
-      title: 'Professional Awards',
-      description: 'We celebrate excellence in the Black business community through our annual awards gala.',
-      icon: Award
+      icon: Briefcase,
+      color: 'bg-ccc-gray'
     }
   ];
 
   return (
-    <section id="services" className="section-padding bg-red-900">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-sm font-bold text-gold uppercase tracking-widest mb-4">Our Services</h2>
-          <h3 className="text-4xl font-display font-bold text-white mb-6">How We Support Our Members</h3>
-          <p className="text-red-100">
-            We offer a comprehensive suite of services designed to help your business grow, thrive, and make a lasting impact in the Inland Empire.
+    <section id="services" className="bg-ccc-light py-16">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif font-bold text-ccc-blue mb-4">Our Services</h2>
+          <p className="text-zinc-600 max-w-2xl mx-auto">
+            We offer a comprehensive suite of services designed to help your business grow, thrive, and make a lasting impact.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, idx) => (
+        <div className="grid md:grid-cols-3 gap-8">
+          {services.map((card, idx) => (
             <motion.div 
               key={idx}
-              whileHover={{ y: -5 }}
-              className="bg-red-800 p-8 rounded-2xl shadow-sm border border-white/10 hover:shadow-md transition-all"
+              whileHover={{ y: -10 }}
+              className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full"
             >
-              <div className="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center mb-6">
-                <service.icon className="text-gold w-6 h-6" />
+              <div className={`${card.color} p-6 flex justify-center`}>
+                <card.icon className="w-12 h-12 text-white" />
               </div>
-              <h4 className="text-xl font-display font-bold text-white mb-3">{service.title}</h4>
-              <p className="text-red-100 text-sm leading-relaxed">
-                {service.description}
-              </p>
+              <div className="p-8 flex-grow">
+                <h3 className="text-2xl font-serif font-bold text-ccc-blue mb-4">{card.title}</h3>
+                <p className="text-zinc-600 mb-6">{card.description}</p>
+                <a href="#" className="text-ccc-blue font-bold flex items-center gap-2 hover:underline">
+                  Learn More <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -296,69 +245,59 @@ const Services = () => {
   );
 };
 
-const Events = () => {
-  const events = [
-    {
-      title: 'Monthly Business Mixer',
-      date: 'March 25, 2026',
-      time: '6:00 PM - 8:00 PM',
-      location: 'Riverside Convention Center',
-      image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=2069'
-    },
-    {
-      title: 'Economic Empowerment Summit',
-      date: 'April 12, 2026',
-      time: '9:00 AM - 4:00 PM',
-      location: 'Ontario Business Hub',
-      image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&q=80&w=2070'
-    },
-    {
-      title: 'Annual Awards Gala',
-      date: 'May 30, 2026',
-      time: '7:00 PM - 11:00 PM',
-      location: 'The Mission Inn Hotel',
-      image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=2074'
-    }
+const ImpactSection = () => {
+  const stats = [
+    { label: 'Members', value: '500+' },
+    { label: 'Years Active', value: '25+' },
+    { label: 'Events Annually', value: '40+' },
+    { label: 'Community Impact', value: '$2M+' },
   ];
 
   return (
-    <section id="events" className="section-padding bg-red-800">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-sm font-bold text-gold uppercase tracking-widest mb-4">Upcoming Events</h2>
-            <h3 className="text-4xl font-display font-bold text-white">Join Us at Our Next Gathering</h3>
+    <section className="section-container bg-white">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+        {stats.map((stat, idx) => (
+          <div key={idx}>
+            <div className="text-4xl font-serif font-bold text-ccc-blue mb-2">{stat.value}</div>
+            <div className="text-ccc-gray text-xs font-bold uppercase tracking-widest">{stat.label}</div>
           </div>
-          <button className="text-white font-bold flex items-center gap-2 hover:text-gold transition-colors">
-            View All Events <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+        ))}
+      </div>
+    </section>
+  );
+};
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {events.map((event, idx) => (
-            <div key={idx} className="group cursor-pointer">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-6">
-                <img 
-                  src={event.image} 
-                  alt={event.title} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider text-zinc-900">
-                  {event.date.split(',')[0]}
-                </div>
-              </div>
-              <h4 className="text-xl font-display font-bold text-white mb-2 group-hover:text-gold transition-colors">{event.title}</h4>
-              <div className="flex flex-col gap-1 text-red-100 text-sm">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gold" />
-                  <span>{event.date} • {event.time}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-gold" />
-                  <span>{event.location}</span>
-                </div>
-              </div>
+const MembershipSection = () => {
+  const plans = [
+    { title: 'Individual', price: '$150', features: ['Networking Access', 'Member Directory', 'Event Discounts'] },
+    { title: 'Business', price: '$350', features: ['Advocacy Support', 'Marketing Tools', 'Procurement Help'], popular: true },
+    { title: 'Corporate', price: '$1,000+', features: ['Strategic Partnerships', 'Gala Sponsorship', 'Board Opportunities'] },
+  ];
+
+  return (
+    <section id="membership" className="bg-ccc-light py-16">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif font-bold text-ccc-blue mb-4">Membership Plans</h2>
+          <p className="text-zinc-600 max-w-2xl mx-auto">
+            Join a powerful network of business owners and professionals dedicated to excellence and community growth.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {plans.map((plan, idx) => (
+            <div key={idx} className={`bg-white p-8 rounded-lg shadow-md border-t-4 ${plan.popular ? 'border-ccc-gold' : 'border-ccc-blue'}`}>
+              <h4 className="text-xl font-bold text-ccc-blue mb-2">{plan.title}</h4>
+              <div className="text-3xl font-serif font-bold text-ccc-blue-dark mb-6">{plan.price}<span className="text-sm font-normal text-zinc-500">/year</span></div>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-zinc-600">
+                    <CheckCircle2 className="w-4 h-4 text-ccc-gold" /> {f}
+                  </li>
+                ))}
+              </ul>
+              <button className={`w-full py-3 rounded font-bold transition-all ${plan.popular ? 'btn-secondary' : 'btn-primary'}`}>
+                Select Plan
+              </button>
             </div>
           ))}
         </div>
@@ -367,131 +306,75 @@ const Events = () => {
   );
 };
 
-const Membership = () => {
-  return (
-    <section id="membership" className="section-padding bg-black relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:40px_40px]"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="bg-zinc-900/50 backdrop-blur-sm border border-white/10 rounded-3xl p-8 md:p-16 text-center">
-          <h2 className="text-gold font-display font-bold text-xl mb-4">Membership</h2>
-          <h3 className="text-4xl md:text-6xl font-display font-bold text-white mb-8">Invest in Your Future Today</h3>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto mb-12">
-            Join a powerful network of business owners and professionals dedicated to excellence and community growth.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
-            {[
-              { title: 'Individual', price: '$150', features: ['Networking Access', 'Member Directory', 'Event Discounts'] },
-              { title: 'Business', price: '$350', features: ['Advocacy Support', 'Marketing Tools', 'Procurement Help'], popular: true },
-              { title: 'Corporate', price: '$1,000+', features: ['Strategic Partnerships', 'Gala Sponsorship', 'Board Opportunities'] },
-            ].map((plan, i) => (
-              <div 
-                key={i} 
-                className={`p-8 rounded-2xl border ${plan.popular ? 'bg-gold border-gold' : 'bg-black/40 border-white/10'} text-left transition-transform hover:scale-105`}
-              >
-                <h4 className={`text-xl font-bold mb-2 ${plan.popular ? 'text-black' : 'text-white'}`}>{plan.title}</h4>
-                <div className={`text-3xl font-display font-bold mb-6 ${plan.popular ? 'text-black' : 'text-gold'}`}>{plan.price}<span className="text-sm font-normal">/year</span></div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className={`flex items-center gap-2 text-sm ${plan.popular ? 'text-black/80' : 'text-zinc-400'}`}>
-                      <CheckCircle2 className="w-4 h-4" /> {f}
-                    </li>
-                  ))}
-                </ul>
-                <button className={`w-full py-3 rounded-lg font-bold transition-colors ${plan.popular ? 'bg-black text-white hover:bg-zinc-800' : 'bg-gold text-black hover:bg-gold-dark'}`}>
-                  Select Plan
-                </button>
-              </div>
-            ))}
-          </div>
-          <p className="text-zinc-500 text-sm italic">
-            * Custom sponsorship levels are available for organizations looking for deeper community engagement.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-zinc-950 pt-20 pb-10 border-t border-white/5">
+    <footer id="contact" className="bg-ccc-blue-dark text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 bg-gold rounded-full flex items-center justify-center font-display font-bold text-black text-xl">
-                B
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-bold text-white leading-none tracking-tight">BCC</span>
-                <span className="text-[10px] text-gold uppercase tracking-widest font-semibold">Inland Empire</span>
-              </div>
+            <div className="flex flex-col mb-6">
+              <span className="font-serif font-bold text-xl leading-tight uppercase">Black Chamber</span>
+              <span className="font-serif font-bold text-xl leading-tight uppercase">Inland Empire</span>
             </div>
-            <p className="text-zinc-500 text-sm leading-relaxed mb-6">
+            <p className="text-white/70 text-sm mb-6">
               The premier business organization for African American entrepreneurs and professionals in the Inland Empire region.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-gold hover:text-black transition-all"><Facebook className="w-5 h-5" /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-gold hover:text-black transition-all"><Twitter className="w-5 h-5" /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-gold hover:text-black transition-all"><Instagram className="w-5 h-5" /></a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 hover:bg-gold hover:text-black transition-all"><Linkedin className="w-5 h-5" /></a>
+              <Facebook className="w-5 h-5 cursor-pointer hover:text-ccc-gold" />
+              <Twitter className="w-5 h-5 cursor-pointer hover:text-ccc-gold" />
+              <Instagram className="w-5 h-5 cursor-pointer hover:text-ccc-gold" />
+              <Linkedin className="w-5 h-5 cursor-pointer hover:text-ccc-gold" />
+              <Youtube className="w-5 h-5 cursor-pointer hover:text-ccc-gold" />
             </div>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-6">Quick Links</h4>
-            <ul className="space-y-4 text-zinc-500 text-sm">
-              <li><a href="#" className="hover:text-gold transition-colors">Home</a></li>
-              <li><a href="#about" className="hover:text-gold transition-colors">About Us</a></li>
-              <li><a href="#services" className="hover:text-gold transition-colors">Our Services</a></li>
-              <li><a href="#events" className="hover:text-gold transition-colors">Events</a></li>
-              <li><a href="#membership" className="hover:text-gold transition-colors">Membership</a></li>
+            <h4 className="text-ccc-gold font-bold uppercase tracking-widest text-sm mb-6">Quick Links</h4>
+            <ul className="space-y-3 text-sm text-white/80">
+              <li><a href="#" className="hover:text-white">Home</a></li>
+              <li><a href="#about" className="hover:text-white">About Us</a></li>
+              <li><a href="#services" className="hover:text-white">Our Services</a></li>
+              <li><a href="#membership" className="hover:text-white">Membership</a></li>
+              <li><a href="#contact" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-6">Contact Us</h4>
-            <ul className="space-y-4 text-zinc-500 text-sm">
+            <h4 className="text-ccc-gold font-bold uppercase tracking-widest text-sm mb-6">Our Impact</h4>
+            <ul className="space-y-3 text-sm text-white/80">
+              <li><a href="#" className="hover:text-white">Economic Growth</a></li>
+              <li><a href="#" className="hover:text-white">Business Advocacy</a></li>
+              <li><a href="#" className="hover:text-white">Community Partners</a></li>
+              <li><a href="#" className="hover:text-white">Success Stories</a></li>
+              <li><a href="#" className="hover:text-white">Newsroom</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-ccc-gold font-bold uppercase tracking-widest text-sm mb-6">Contact</h4>
+            <ul className="space-y-4 text-sm text-white/80">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-gold flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-ccc-gold" />
                 <span>123 Business Way, Suite 100<br />Riverside, CA 92501</span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-gold flex-shrink-0" />
+                <Phone className="w-4 h-4 text-ccc-gold" />
                 <span>(951) 555-0123</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-gold flex-shrink-0" />
+                <Mail className="w-4 h-4 text-ccc-gold" />
                 <span>info@bccinlandempire.org</span>
               </li>
             </ul>
           </div>
-
-          <div>
-            <h4 className="text-white font-bold mb-6">Newsletter</h4>
-            <p className="text-zinc-500 text-sm mb-4">Stay updated with our latest news and events.</p>
-            <div className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="Email Address" 
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white w-full focus:outline-none focus:border-gold"
-              />
-              <button className="bg-gold text-black p-2 rounded-lg hover:bg-gold-dark transition-colors">
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-zinc-600 text-[10px] uppercase tracking-widest font-bold">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-white/50">
           <p>© 2026 Black Chamber of Commerce Inland Empire. All Rights Reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-gold">Privacy Policy</a>
-            <a href="#" className="hover:text-gold">Terms of Service</a>
+            <a href="#" className="hover:underline">Privacy Policy</a>
+            <a href="#" className="hover:underline">Terms of Use</a>
+            <a href="#" className="hover:underline">Site Map</a>
           </div>
         </div>
       </div>
@@ -504,13 +387,13 @@ const Footer = () => {
 export default function App() {
   return (
     <div className="font-sans">
-      <Navbar />
+      <UtilityHeader />
+      <Header />
       <Hero />
-      <Stats />
-      <About />
-      <Services />
-      <Events />
-      <Membership />
+      <AboutSection />
+      <ServicesSection />
+      <ImpactSection />
+      <MembershipSection />
       <Footer />
     </div>
   );

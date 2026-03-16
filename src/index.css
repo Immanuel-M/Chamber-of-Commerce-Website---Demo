@@ -1,29 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "Roboto Slab", serif;
   
-  --color-gold: #D4AF37;
-  --color-gold-light: #F4D03F;
-  --color-gold-dark: #996515;
+  --color-ccc-blue: #004b87;
+  --color-ccc-blue-dark: #003359;
+  --color-ccc-gold: #ffc72c;
+  --color-ccc-light: #f8f9fa;
+  --color-ccc-gray: #6c757d;
 }
 
 @layer base {
   body {
-    @apply bg-red-700 text-white antialiased;
+    @apply bg-white text-zinc-900 antialiased;
   }
 }
 
-.glass-nav {
-  @apply bg-black/90 backdrop-blur-md border-b border-white/10;
+.nav-link {
+  @apply text-ccc-blue font-semibold hover:text-ccc-blue-dark transition-colors py-2;
 }
 
-.btn-gold {
-  @apply bg-gold hover:bg-gold-dark text-black font-semibold px-6 py-3 rounded-md transition-all duration-300;
+.btn-primary {
+  @apply bg-ccc-blue hover:bg-ccc-blue-dark text-white font-bold px-6 py-3 rounded transition-all;
 }
 
-.section-padding {
-  @apply py-20 px-6 md:px-12 lg:px-24;
+.btn-secondary {
+  @apply bg-ccc-gold hover:bg-yellow-500 text-ccc-blue-dark font-bold px-6 py-3 rounded transition-all;
+}
+
+.section-container {
+  @apply max-w-7xl mx-auto px-6 py-16;
 }
